@@ -74,6 +74,7 @@ public class AddToCartFlowTest {
     public void checkAddedToCart(){
 
         objectProductPage = new ProductPage(driver);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         String cartSize = objectProductPage.getCartSize();
         int initialCartSize=Integer.parseInt(cartSize);
 
