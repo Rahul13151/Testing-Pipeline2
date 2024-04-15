@@ -28,7 +28,7 @@ jobs:
      
     - name: Run Selenium tests
       run: |
-        cd selenium-test
+        cd Amazon_Test
         mvn clean test   
 
 
