@@ -21,7 +21,12 @@ public class AddToCartFlowTest {
     SignUpPage objectSignupPage;
     @BeforeTest
     public void beforeTest(){
-        driver = new ChromeDriver();
+        options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments("--window-size=1920x1080");
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.manage().window().maximize();
         driver.get("https://www.amazon.in/");
