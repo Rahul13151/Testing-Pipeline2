@@ -3,6 +3,7 @@ package Test_Cases;
 import Pages.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 public class AddToCartFlowTest {
     WebDriver driver;
-
+    ChromeOptions options;
     HomePage objectHomePage;
     ProductListPage objectProductListPage;
     ProductPage objectProductPage;
