@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="/home/knoldus/Desktop/Test-Pipeline/Amazon_Test">
+        <classes>
+            <class name="Test_Cases.AddToCartFlowTest">
+                <methods>
+                    <include name="checkSiteLaunched"/>
+                    <include name="checkPageOnSearch"/>
+                    <include name="checkOnClickColorPattern"/>
+                    <include name="checkAddedToCart"/>
+                    <include name="checkProceedToBuy"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
