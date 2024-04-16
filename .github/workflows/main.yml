@@ -1,19 +1,15 @@
 name: Testing Pipeline
 
 on:
+  # Allows to run workflow on every push or pull made to any of exsisting branches
   push:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  # push:
-  #   branches: [ "main","master" ]
-  # pull_request:
-  #   branches: [ "main", "" ]
+  pull_request:
     
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   Run_Selenium_Test:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -33,8 +29,10 @@ jobs:
       uses: actions/upload-artifact@v4
       if: success() || failure()
       with:
-          name: TestNG Report                 # Name of the folder
-          path: Amazon_Test/target/surefire-reports/   
+          name: Amazon Test Report                 # Name of the folder
+          path: Amazon_Test/target/surefire-reports/
+
+          
   jmeter:
     runs-on: ubuntu-latest
 
@@ -64,36 +62,6 @@ jobs:
           name: jmeter-results
           path: jmeter/result
           
-
-  # jmeter_tests:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #   - name: Create reports directory
-  #     run: |
-  #       cd jmeter
-  #       mkdir reports 
-    
-  #   - name: JMeter Test
-  #     uses: QAInsights/PerfAction@v5.6.2
-  #     with:
-  #       test-plan-path: jmeter/jmeterTest.jmx
-  #       args: "-e -o ./jmeter/reports/html/"
-        
-  #   - name: Upload Results
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: jmeter-results
-  #       path: jmeter/result.jtl
-  #       if-no-files-found: error
-    
-  #   - name: Upload HTML Reports
-  #     uses: actions/upload-artifact@v3
-  #     with:
-  #       name: jmeter-html-reports
-  #       path: jmeter/reports
-  #       if-no-files-found: error
-        
   rest_assured_tests:
     runs-on: ubuntu-latest
     steps:
@@ -114,34 +82,8 @@ jobs:
       uses: actions/upload-artifact@v4
       if: success() || failure()
       with:
-          name: TestNG Report                 # Name of the folder
-          path: rest-assured/target/surefire-reports/   
-    # steps:
-    # - name: Checkout code
-    #   uses: actions/checkout@v2
-
-    # - name: Set up JDK
-    #   uses: actions/setup-java@v2
-    #   with:
-    #     java-version: '11' # Set the Java version you need
-    #     distribution: 'adopt'
-
-    # - name: Build with Maven
-    #   run: |
-    #     cd rest-assured
-    #     mvn clean install -B
-    
-    # - name: Run Rest Assured tests
-    #   run: |
-    #     cd rest-assured
-    #     mvn clean test
-    # - name: Archive test reports
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: rest-assured-test-reports
-    #     path: target/surefire-reports
-    
-
+          name: Rest Assured Test Report                 # Name of the folder
+          path: rest-assured/target/surefire-reports/  
 
   postman_tests:
     runs-on: ubuntu-latest
@@ -173,9 +115,6 @@ jobs:
       with:
         name: postman-test-reports
         path: postman/testArtifacts
-
-
-
 
   Run_Nightwatch_tests:
     # The type of runner that the job will run on
@@ -214,7 +153,8 @@ jobs:
           name: nightwatch-report-${{ matrix.os }}
           path: nightwatch-test/tests_output
 
-# Running Test using xvfb
+# Running Test using xvfb  
+# But not used xvfb as it works on linux only 
    # Run_Nightwatch_Tests:
    #  # The type of runner that the job will run on
    #  runs-on: ${{ matrix.os }}
