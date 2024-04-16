@@ -47,15 +47,17 @@ jobs:
           export PATH=$PATH:$(pwd)/apache-jmeter-5.4.1/bin
 
       - name: Run JMeter Tests
-        run: |
-          jmeter -n -t jmeter/jmeterTest.jmx -l results.jtl
-          distribution: 'temurin'
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
+        # You may pin to the exact commit or the version.
+        # uses: arunpunaroor/jmeter-runner-action@003fec00fef84ad688773de5231853aa0b9e8083
+        uses: arunpunaroor/jmeter-runner-action@v1
         with:
-          name: jmeter-results
-          path: results.jtl
+          # The path to the JMX test file
+          testFilePath: jmeter/jmeterTest.jmx 
+          # The folder where the JMeter reports will be published
+          outputReportsFolder: 'jmeter/result'
+          # optional, default is reports/
+          # Optional arguments that are passed to the JMeter tool
+              
 
   # jmeter_tests:
   #   runs-on: ubuntu-latest
