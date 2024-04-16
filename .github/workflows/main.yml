@@ -43,14 +43,7 @@ jobs:
         with:
           name: nightwatch-report-${{ matrix.os }}
           path: nightwatch-test/tests_output
-      - name: Send email
-        uses: Softprops/sendmail-action@v4
-        with:
-          to: rahulgarg70100@gmail.com
-          from: rahul.garg@knoldus.com
-          subject: Daily Workflow Report
-          message: |
-            Your daily workflow has been executed successfully.
+          
   Run_Selenium_Test:
     runs-on: ubuntu-latest
     steps:
