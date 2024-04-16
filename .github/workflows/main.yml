@@ -41,7 +41,6 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 11
-          distribution: 'temurin'
       - name: Download JMeter
         run: |
           curl -L https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz | tar xz
