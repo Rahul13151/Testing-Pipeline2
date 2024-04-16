@@ -100,7 +100,7 @@ jobs:
     - name: Run Postman tests and Generate Report
       run: |
           cd postman
-          newman run "Go Rest.postman_collection.json" -e test.postman_environment.json 
+          newman run "Go Rest.postman_collection.json" -e test.postman_environment.json -r htmlextra –reporter-htmlextra-title “Automated test reporting – Postman echo”
 
     # Upload test reports as artifacts
     - name: Archive test reports
@@ -108,7 +108,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: postman-test-reports
-        path: postman/test_reports
+        path: postman/
 
 
 
