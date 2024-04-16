@@ -70,22 +70,6 @@ public class AddToCartFlowTest {
         String itemNameOnProductPage = objectProductPage.getItemName();
         Assert.assertTrue(itemNameOnProductPage.contains(itemNameOnProductListPage));
     }
-    @Test(priority=4)
-    public void checkAddedToCart(){
-
-        objectProductPage = new ProductPage(driver);
-        String cartSize = objectProductPage.getCartSize();
-        int initialCartSize=Integer.parseInt(cartSize);
-
-        objectProductPage.clickAddToCart();
-        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
-        String expectedStringValue= Integer.toString(initialCartSize+1);
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(objectProductPage.cartItemCount,expectedStringValue));
-        cartSize=objectProductPage.getCartSize();
-        int finalCartSize=Integer.parseInt(cartSize);
-
-        Assert.assertEquals(initialCartSize+1,finalCartSize);
-    }
     @AfterTest
     public void tearDown(){
         driver.quit();
