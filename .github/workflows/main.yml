@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Create reports directory
+    # - name: Create reports directory
       # run: |
       #   cd jmeter
       #   mkdir reports
