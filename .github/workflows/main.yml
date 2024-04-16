@@ -36,26 +36,28 @@ jobs:
 
     steps:
     - name: Create reports directory
-      run: mkdir reports
+      run: |
+        cd jmeter
+        mkdir reports
     
     - name: JMeter Test
       uses: QAInsights/PerfAction@v5.6.2
       with:
-        test-plan-path: ./jmeter/S01_SimpleExample.jmx
-        args: "-e -o ./reports/html/"
+        test-plan-path: jmeter/jmeterTest.jmx
+        args: "-e -o ./jmeter/reports/html/"
         
     - name: Upload Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: jmeter-results
-        path: result.jtl
+        path: jmeter/result.jtl
         if-no-files-found: error
     
     - name: Upload HTML Reports
       uses: actions/upload-artifact@v3
       with:
         name: jmeter-html-reports
-        path: reports
+        path: jmeter/reports
         if-no-files-found: error
         
   rest_assured_tests:
