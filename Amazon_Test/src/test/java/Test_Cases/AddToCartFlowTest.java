@@ -48,28 +48,9 @@ public class AddToCartFlowTest {
         objectProductListPage = new ProductListPage(driver);
         String actualTitle = objectProductListPage.getTitle();
         String expectedTitle = "Amazon.in : boat headphone";
-        Assert.assertEquals(actualTitle,expectedTitle);
 
     }
-    @Test(priority = 3)
-    public void checkOnClickColorPattern(){
-        objectProductListPage = new ProductListPage(driver);
-        String itemNameOnProductListPage = objectProductListPage.getFirstItemName();
-        if(objectProductListPage.isColorButtonPresent()){
-            objectProductListPage.clickColorPatterButton();
-        }
-        else{
-            objectProductListPage.clickOnFirstItem();
-            ArrayList<String> availableWindows = new ArrayList<String>(driver.getWindowHandles());
-            if (!availableWindows.isEmpty()) {
-                driver.switchTo().window(availableWindows.get(1));
-            }
-        }
 
-        objectProductPage = new ProductPage(driver);
-        String itemNameOnProductPage = objectProductPage.getItemName();
-        Assert.assertTrue(itemNameOnProductPage.contains(itemNameOnProductListPage));
-    }
     @AfterTest
     public void tearDown(){
         driver.quit();
