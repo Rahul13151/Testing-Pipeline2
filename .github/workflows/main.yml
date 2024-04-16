@@ -80,7 +80,35 @@ jobs:
     
 
 
+  postman_tests:
+    runs-on: ubuntu-latest
 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '21'
+
+    - name: Install Postman
+      run: |
+        npm install -g newman
+        npm install newman-reporter-html
+
+    - name: Run Postman tests and Generate Report
+      run: |
+          cd postman
+          newman run "Go Rest.postman_collection.json" -e test.postman_environment.json 
+
+    # Upload test reports as artifacts
+    - name: Archive test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: postman-test-reports
+        path: postman/test_reports
 
 
 
