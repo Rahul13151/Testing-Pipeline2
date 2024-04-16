@@ -1,6 +1,8 @@
 name: Testing Pipeline
 
 on:
+  schedule:
+    - cron: '0 11 * * *' # Runs every day at 11:00 AM UTC
   # Allows to run workflow on every push or pull made to any of exsisting branches
   push:
   pull_request:
@@ -9,6 +11,46 @@ on:
   workflow_dispatch:
 
 jobs:
+  Run_Nightwatch_tests:
+    # Executed these tests on all windows,ubuntu and mac OS.
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest,windows-latest,macos-latest]
+    steps:
+    # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Nightwatch Test Started!
+        
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - name: npm-install
+        run: |
+           cd nightwatch-test
+           npm ci
+      - name: Run Nightwatch tests
+        run:  |
+           cd nightwatch-test
+           npx nightwatch --headless
+      - name: Archive test reports
+        if: always() 
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightwatch-report-${{ matrix.os }}
+          path: nightwatch-test/tests_output
+      - name: Send email
+        uses: Softprops/sendmail-action@v4
+        with:
+          to: rahulgarg70100@gmail.com
+          from: rahul.garg@knoldus.com
+          subject: Daily Workflow Report
+          message: |
+            Your daily workflow has been executed successfully.
   Run_Selenium_Test:
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +73,6 @@ jobs:
       with:
           name: Amazon Test Report                 # Name of the folder
           path: Amazon_Test/target/surefire-reports/
-
           
   jmeter:
     runs-on: ubuntu-latest
@@ -45,16 +86,12 @@ jobs:
           export PATH=$PATH:$(pwd)/apache-jmeter-5.4.1/bin
 
       - name: Run JMeter Tests
-        # You may pin to the exact commit or the version.
-        # uses: arunpunaroor/jmeter-runner-action@003fec00fef84ad688773de5231853aa0b9e8083
         uses: arunpunaroor/jmeter-runner-action@v1
         with:
           # The path to the JMX test file
           testFilePath: jmeter/jmeterTest.jmx 
           # The folder where the JMeter reports will be published
           outputReportsFolder: 'jmeter/result'
-          # optional, default is reports/
-          # Optional arguments that are passed to the JMeter tool
       - name: Artifact Test result
         if: always()
         uses: actions/upload-artifact@v4
@@ -116,44 +153,9 @@ jobs:
         name: postman-test-reports
         path: postman/testArtifacts
 
-  Run_Nightwatch_tests:
-    # The type of runner that the job will run on
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        # os: [ubuntu-latest,windows-latest,macos-latest]
-        
-        
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Nightwatch Test Started!
-        
-      - name: Checkout code
-        uses: actions/checkout@v4
- 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 21
-      - name: npm-install
-        run: |
-           cd nightwatch-test
-           npm ci
-      - name: Run Nightwatch tests
-        run:  |
-           cd nightwatch-test
-           npx nightwatch --headless
-      - name: Archive test reports
-        if: always() 
-        uses: actions/upload-artifact@v4
-        with:
-          name: nightwatch-report-${{ matrix.os }}
-          path: nightwatch-test/tests_output
+  
 
-# Running Test using xvfb  
+# Running Nightwatch Test using xvfb which can be used alternatively 
 # But not used xvfb as it works on linux only 
    # Run_Nightwatch_Tests:
    #  # The type of runner that the job will run on
