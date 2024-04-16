@@ -30,35 +30,61 @@ jobs:
       run: |
         cd Amazon_Test
         mvn clean test  
-        
-  jmeter_tests:
+  jmeter:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Create reports directory
-      run: |
-        cd jmeter
-        mkdir reports 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 11
+          distribution: 'temurin'
+      - name: Download JMeter
+        run: |
+          curl -L https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz | tar xz
+          export PATH=$PATH:$(pwd)/apache-jmeter-5.4.1/bin
+
+      - name: Run JMeter Tests
+        run: |
+          jmeter -n -t jmeter/jmeterTest.jmx -l results.jtl
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-results
+          path: results.jtl
+
+  # jmeter_tests:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Create reports directory
+  #     run: |
+  #       cd jmeter
+  #       mkdir reports 
     
-    - name: JMeter Test
-      uses: QAInsights/PerfAction@v5.6.2
-      with:
-        test-plan-path: jmeter/jmeterTest.jmx
-        args: "-e -o ./jmeter/reports/html/"
+  #   - name: JMeter Test
+  #     uses: QAInsights/PerfAction@v5.6.2
+  #     with:
+  #       test-plan-path: jmeter/jmeterTest.jmx
+  #       args: "-e -o ./jmeter/reports/html/"
         
-    - name: Upload Results
-      uses: actions/upload-artifact@v4
-      with:
-        name: jmeter-results
-        path: jmeter/result.jtl
-        if-no-files-found: error
+  #   - name: Upload Results
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: jmeter-results
+  #       path: jmeter/result.jtl
+  #       if-no-files-found: error
     
-    - name: Upload HTML Reports
-      uses: actions/upload-artifact@v3
-      with:
-        name: jmeter-html-reports
-        path: jmeter/reports
-        if-no-files-found: error
+  #   - name: Upload HTML Reports
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: jmeter-html-reports
+  #       path: jmeter/reports
+  #       if-no-files-found: error
         
   rest_assured_tests:
     runs-on: ubuntu-latest
