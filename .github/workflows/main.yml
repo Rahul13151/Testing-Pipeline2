@@ -52,7 +52,13 @@ jobs:
           outputReportsFolder: 'jmeter/result'
           # optional, default is reports/
           # Optional arguments that are passed to the JMeter tool
-              
+      - name: Artifact Test result
+        if: always()
+        uses: actions/upload-artificats@v4
+        with:
+          name: jmeter-results
+          path: jmeter/results
+          
 
   # jmeter_tests:
   #   runs-on: ubuntu-latest
