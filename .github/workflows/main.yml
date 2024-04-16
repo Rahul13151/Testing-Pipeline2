@@ -43,7 +43,9 @@ jobs:
         cache: maven
       
     - name: Test Execution
-      run: mvn clean test
+      run: |
+        cd rest-assured
+        mvn clean test
         
     - name: Test Report Generation
       uses: actions/upload-artifact@v4
