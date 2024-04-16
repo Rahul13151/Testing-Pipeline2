@@ -52,7 +52,7 @@ jobs:
       if: success() || failure()
       with:
           name: TestNG Report                 # Name of the folder
-          path: target/surefire-reports/   
+          path: rest-assured/target/surefire-reports/   
     # steps:
     # - name: Checkout code
     #   uses: actions/checkout@v2
